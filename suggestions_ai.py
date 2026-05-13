@@ -1,29 +1,25 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
-import os
+# suggestions_ai.py
 
-# ===== CHANGE THIS PATH to your local model folder =====
-model_path = r"C:/Users/Shree/Downloads/codellama"  # <- update this
-
-generator = None
-
-try:
-    if os.path.exists(model_path):
-        tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
-        model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto", local_files_only=True)
-        generator = pipeline("text-generation", model=model, tokenizer=tokenizer)
-        print("✅ Model loaded successfully")
-    else:
-        print("⚠️ Model path does not exist. Fallback mode enabled.")
-
-except Exception as e:
-    print("⚠️ Model loading failed:", e)
-
-# ===== Function to rewrite sections =====
 def rewrite_section(section_text, section_name):
-    if generator:
-        prompt = f"Improve this resume {section_name} section to be ATS-friendly:\n{section_text}"
-        output = generator(prompt, max_length=200, do_sample=True)
-        return output[0]['generated_text']
-    else:
-        # fallback
-        return f"(Offline model not loaded) Original {section_name} section:\n{section_text[:300]}"
+    section_name = section_name.capitalize()
+
+    if not section_text or len(section_text.strip()) == 0:
+        return f"No content found in {section_name} section."
+
+    return f"""
+Improved {section_name} Section:
+
+• Start points with strong action verbs.
+• Add measurable impact like accuracy, %, time saved, users, or project result.
+• Match keywords from the job description.
+• Keep sentences short and ATS-friendly.
+• Avoid tables, images, symbols, and unnecessary formatting.
+
+Sample Rewrite:
+
+{section_text[:300]}
+
+Better Format Example:
+• Developed and improved {section_name.lower()} content using relevant keywords and clear achievements.
+• Highlighted technical skills, project impact, and practical experience in an ATS-friendly format.
+"""

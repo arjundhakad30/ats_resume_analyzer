@@ -7,7 +7,7 @@ from suggestions_rule import generate_suggestions
 from skills_db import SKILLS
 
 st.set_page_config("ATS Resume Analyzer", layout="wide")
-st.title("📄 ATS Resume Analyzer")
+st.title("ATS Resume Analyzer")
 
 resume_file = st.file_uploader("Upload Resume (PDF)", type="pdf")
 jd_text = st.text_area("Paste Job Description", height=220)
@@ -21,7 +21,7 @@ if st.button("Analyze Resume"):
         scores = section_scores(sections, jd_text)
         total_score = overall_score(scores)
 
-        st.subheader("📊 Section-wise ATS Score")
+        st.subheader("Section-wise ATS Score")
         for sec, sc in scores.items():
             st.write(f"{sec.capitalize()}: {sc}%")
 
@@ -30,22 +30,22 @@ if st.button("Analyze Resume"):
         # Feedback & missing skills
         strengths, weaknesses, missing_skills = analyze_feedback(scores, resume_text, jd_text)
 
-        st.subheader("✅ Good Things")
+        st.subheader("Good Things")
         for s in strengths:
             st.success(s)
 
-        st.subheader("❌ Mistakes / Weak Points")
+        st.subheader("Mistakes / Weak Points")
         for w in weaknesses:
             st.error(w)
 
         # Rule-based suggestions
-        st.subheader("🛠 Suggestions (Offline Rules)")
+        st.subheader("Suggestions (Offline Rules)")
         suggestions = generate_suggestions(resume_text, jd_text, sections, missing_skills)
         for sug in suggestions:
             st.write("✔️", sug)
 
         # AI-based suggestions (offline)
-        st.subheader("✨ Resume Rewrite Suggestions")
+        st.subheader(" Resume Rewrite Suggestions")
         for sec, content in sections.items():
             if content:
                 with st.expander(f"Improve {sec.capitalize()} Section"):
