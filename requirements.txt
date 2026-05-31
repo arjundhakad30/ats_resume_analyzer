@@ -3,3 +3,5 @@ PyPDF2
 pandas
 scikit-learn
 nltk
+sentence-transformers
+torch
